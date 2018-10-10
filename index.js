@@ -91,7 +91,8 @@ const appFactory = (options) => {
 
     app.run = () => {
         const local = colib.utils.webUrl(config.service);
-        logger.info(`Listening server[${vtag}] on ${local}, PID:${process.pid}`);
+        logger.info(`run server [${vtag}] , PID:${process.pid}`);
+        logger.info(`listening on ${local} ...`);
         app.listen(config.service.port, config.service.host);
         if (config.service.nginx_url) {
             logger.info('[nginx]:', config.service.nginx_url);
