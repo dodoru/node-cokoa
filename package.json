@@ -1,0 +1,22 @@
+{
+  "name": "node-cokoa",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-session": "^5.9.0",
+    "node-web-common": "0.0.2"
+  },
+  "engines": {
+    "node": ">=8.0"
+  },
+  "bugs": {
+    "url": "https://github.com/dodoru/node-cokoa/issues"
+  },
+  "homepage": "https://github.com/dodoru/node-cokoa#readme",
+  "devDependencies": {}
+}
