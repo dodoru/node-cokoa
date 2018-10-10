@@ -1,6 +1,6 @@
 {
   "name": "node-cokoa",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
@@ -9,7 +9,7 @@
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-session": "^5.9.0",
-    "node-web-common": "0.0.2"
+    "node-web-common": "0.0.4"
   },
   "engines": {
     "node": ">=8.0"
@@ -18,5 +18,15 @@
     "url": "https://github.com/dodoru/node-cokoa/issues"
   },
   "homepage": "https://github.com/dodoru/node-cokoa#readme",
-  "devDependencies": {}
+  "devDependencies": {},
+  "maintainers": [
+    {
+      "name": "Nico Ning",
+      "email": "unicode233@outlook.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dodoru/node-cokoa.git"
+  }
 }

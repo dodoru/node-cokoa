@@ -61,7 +61,7 @@ const appFactory = (options) => {
             nginx_url: null,
         },
         logLevel: 'info',
-        logfile: '',                        // default logfile
+        logFile: '',                        // default logfile
         logFileOptions: {
             maxsize: 10 * 1024 * 1024,      // 10MB
             maxFiles: 5,
