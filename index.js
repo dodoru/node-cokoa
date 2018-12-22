@@ -33,7 +33,7 @@ const appFactory = (options) => {
     return app;
 };
 
-const responseError = (ctx, error) => {
+const stateError = (ctx, error) => {
     // $error: instance of colib.api_exceptions.ApiError
     const errno = error.errno;
     const status = (errno > 40000 && errno < 60000) ? parseInt(errno / 100) : 400;
@@ -44,16 +44,20 @@ const responseError = (ctx, error) => {
     };
 };
 
-const formatResponse = (ctx, session_key = "user_id") => {
+const contextMsg = (ctx, session_key = "user_id") => {
     let msg = `${ctx.res.statusCode} ${ctx.req.method} ${ctx.originalUrl}`;
     if (session_key) {
         msg += ` - ${session_key}:${ctx.session[session_key]}`
     }
-    if (ctx.req.method !== 'GET') {
+    let flag = Boolean(ctx.body.error);
+    if (ctx.req.method === 'GET') {
+        flag = flag || !appConfig.ignoreApiGetSuccess;
+    } else {
         msg += `\n[request]: ${ctx.request.body}`;
+        flag = flag || !appConfig.ignoreApiSetSuccess;
     }
-    if (ctx.body) {
-        msg += `\n[response]: ${JSON.stringify(ctx.body)}`;
+    if (flag) {
+        msg += `\n[response]: ${JSON.stringify(ctx.body)}\n`;
     }
     return msg;
 }
@@ -77,10 +81,10 @@ const handleApiError = async (ctx, next) => {
         await next();
     } catch (error) {
         const err = colib.api_exceptions.ApiError.init(error);
-        responseError(ctx, err);
+        stateError(ctx, err);
         logError(error);
     }
-    global.logger.info(formatResponse(ctx))
+    global.logger.info(contextMsg(ctx))
 };
 
 
@@ -94,7 +98,7 @@ module.exports = {
     appConfig: appConfig,
     appFactory: appFactory,
     logError: logError,
-    responseError: responseError,
-    formatResponse: formatResponse,
+    contextMsg: contextMsg,
+    stateError: stateError,
     handleApiError: handleApiError,
 };

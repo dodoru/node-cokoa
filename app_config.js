@@ -28,6 +28,8 @@ const appConfig = {
     },
     logSentry: null,
     ignoreSentryErrnos: [40100, 40300, 40400],
+    ignoreApiGetSuccess: true,
+    ignoreApiSetSuccess: true,
 }
 
 
