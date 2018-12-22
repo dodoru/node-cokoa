@@ -28,8 +28,12 @@ npm install node-cokoa
 const cokoa = require('node-cokoa');
 
 function test_koa_app() {
+    const appConfig = cokoa.appConfig;
+    console.log('default:', appConfig.name, appConfig.version)
     const app = cokoa.appFactory({name: 'KoaWeb', version: 'v0.0.1'});
     app.run();
+
+    console.log('custom :', appConfig.name, appConfig.version)
 }
 
 test_koa_app();
