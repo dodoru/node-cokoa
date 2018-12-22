@@ -27,7 +27,7 @@ const appConfig = {
         zippedArchive: true,
     },
     logSentry: null,
-    ignoreSentryErrnos: [40100, 40300],
+    ignoreSentryErrnos: [40100, 40300, 40400],
 }
 
 

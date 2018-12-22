@@ -15,5 +15,5 @@ test-browser/
 
 *.swp
 *.log
-
+*.bak.*
 

@@ -59,11 +59,16 @@ const formatResponse = (ctx, session_key = "user_id") => {
 }
 
 const logError = (error, extra_msg = '') => {
-    const ignoreErrnos = appConfig.ignoreSentryErrnos || new Set([]);
-    global.logger.error(error);
-    if (appConfig.logSentry instanceof Function && !ignoreErrnos.has(error.errno)) {
-        error.message += `\n${extra_msg}`;
-        appConfig.logSentry(error);
+    const ignoreErrnos = new Set(appConfig.ignoreSentryErrnos);
+    const is_ignored = ignoreErrnos.has(error.errno)
+    if (is_ignored) {
+        global.logger.info(error)
+    } else {
+        global.logger.error(error)
+        if (appConfig.logSentry instanceof Function) {
+            error.message += `\n${extra_msg}`;
+            appConfig.logSentry(error);
+        }
     }
 }
 
