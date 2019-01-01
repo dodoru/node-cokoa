@@ -1,6 +1,6 @@
 {
   "name": "node-cokoa",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
@@ -9,7 +9,7 @@
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-session": "^5.9.0",
-    "node-web-common": "0.0.4"
+    "node-web-common": "^1.0.2"
   },
   "engines": {
     "node": ">=8.0"

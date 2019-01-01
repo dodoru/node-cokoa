@@ -14,7 +14,7 @@ const appConfig = {
     service: {
         scheme: "http",
         host: "localhost",
-        port: 8080,
+        port: 8088,
         nginx_url: null,
     },
     // LOGGING:
@@ -27,6 +27,8 @@ const appConfig = {
         zippedArchive: true,
     },
     logSentry: null,
+    // ctxMessage: `${status} ${method} ${path} <- ${logSessionKey}=${session[${logSessionKey}]}>
+    logSessionKey: '',
     ignoreSentryErrnos: [40100, 40300, 40400],
     ignoreApiGetSuccess: true,
     ignoreApiSetSuccess: true,

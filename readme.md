@@ -14,7 +14,7 @@ node-web-common
     - bluebird=^3.5.2
     - co=^4.6.0
     - mz=^2.7.0
-    - winston=^2.4.0
+    - winston=2.4.0
 
 ```
 
@@ -26,16 +26,6 @@ npm install node-cokoa
 ## Usage
 ```js
 const cokoa = require('node-cokoa');
-
-function test_koa_app() {
-    const appConfig = cokoa.appConfig;
-    console.log('default:', appConfig.name, appConfig.version)
-    const app = cokoa.appFactory({name: 'KoaWeb', version: 'v0.0.1'});
-    app.run();
-
-    console.log('custom :', appConfig.name, appConfig.version)
-}
-
-test_koa_app();
-
+const app = cokoa.appFactory({name: 'MyKoaApp', version: 'v0.0.1'});
+app.run();
 ```

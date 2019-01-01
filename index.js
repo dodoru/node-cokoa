@@ -12,7 +12,7 @@ const appFactory = (options) => {
     app.config = appConfig;
 
     // global logger
-    const logger = colib.colog.Logger(appConfig.logLevel, appConfig.logFile, appConfig.logFileOptions);
+    const logger = colib.logging.Logger(appConfig.logLevel, appConfig.logFile, appConfig.logFileOptions);
     global.logger = logger;
 
     app.run = () => {
@@ -33,30 +33,21 @@ const appFactory = (options) => {
     return app;
 };
 
-const stateError = (ctx, error) => {
-    // $error: instance of colib.api_exceptions.ApiError
-    const errno = error.errno;
-    const status = (errno > 40000 && errno < 60000) ? parseInt(errno / 100) : 400;
-    ctx.status = error.status || status;
-    ctx.body = {
-        error: `[${error.tag}] ${error.message}.`,
-        code: errno,
-    };
-};
 
-const contextMsg = (ctx, session_key = "user_id") => {
+const contextMsg = (ctx) => {
+    // fmt: `${status} ${method} ${path} <- ${logSessionKey}=${session[${logSessionKey}]}>
     let msg = `${ctx.res.statusCode} ${ctx.req.method} ${ctx.originalUrl}`;
-    if (session_key) {
-        msg += ` - ${session_key}:${ctx.session[session_key]}`
+    if (appConfig.logSessionKey) {
+        msg += ` - ${appConfig.logSessionKey}:${ctx.session[appConfig.logSessionKey]}`
     }
-    let flag = Boolean(ctx.body.error);
+    let is_ignored;
     if (ctx.req.method === 'GET') {
-        flag = flag || !appConfig.ignoreApiGetSuccess;
+        is_ignored = appConfig.ignoreApiGetSuccess;
     } else {
         msg += `\n[request]: ${ctx.request.body}`;
-        flag = flag || !appConfig.ignoreApiSetSuccess;
+        is_ignored = appConfig.ignoreApiSetSuccess;
     }
-    if (flag) {
+    if (ctx.responseErrno || !is_ignored) {
         msg += `\n[response]: ${JSON.stringify(ctx.body)}\n`;
     }
     return msg;
@@ -80,8 +71,14 @@ const handleApiError = async (ctx, next) => {
     try {
         await next();
     } catch (error) {
-        const err = colib.api_exceptions.ApiError.init(error);
-        stateError(ctx, err);
+        const err = colib.api_exceptions.ApiError.new(error);
+        const {status, errno, message} = err.responseData();
+        ctx.responseErrno = errno;
+        ctx.status = status;
+        ctx.body = {
+            error: message,
+            code: errno,
+        }
         logError(error);
     }
     global.logger.info(contextMsg(ctx))
@@ -99,6 +96,5 @@ module.exports = {
     appFactory: appFactory,
     logError: logError,
     contextMsg: contextMsg,
-    stateError: stateError,
     handleApiError: handleApiError,
 };
